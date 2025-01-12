@@ -7,21 +7,28 @@ def generate_dynamic_grid(rows, cols, land_density):
     return [[1 if random.random() < land_density else 0 for _ in range(cols)] for _ in range(rows)]
 
 def visualize_grid(grid, title="Grid"):
-    """Visualize the grid using matplotlib."""
+    """Visualize the grid using matplotlib with visible boundaries."""
     plt.figure(figsize=(6, 6))
     plt.imshow(grid, cmap="tab20", origin="upper")
+
+    # Adding grid lines (boundaries)
+    rows, cols = len(grid), len(grid[0])
+    plt.xticks(np.arange(-0.5, cols, 1))
+    plt.yticks(np.arange(-0.5, rows, 1))
+    plt.grid(color='black', linestyle='-', linewidth=0.5)
+
+    # Adjusting the grid to align with cell boundaries
+    plt.gca().set_xticks(np.arange(-0.5, cols, 1), minor=True)
+    plt.gca().set_yticks(np.arange(-0.5, rows, 1), minor=True)
+    plt.gca().grid(which="minor", color="black", linestyle='-', linewidth=0.5)
+
+    # Turn on the axis to see grid lines
+    plt.gca().tick_params(axis='both', which='both', length=0)  # Hide tick marks
+    plt.axis("on")  # Ensure the axis is visible
+
+    # Adding colorbar and title
     plt.colorbar(label="Island ID")
     plt.title(title)
-    plt.axis("off")
-    plt.show()
-
-    num_rows, num_cols = grid.shape
-    plt.xticks(range(num_cols), labels=range(num_cols))
-    plt.yticks(range(num_rows), labels=range(num_rows))
-    
-    plt.xlabel("Columns")
-    plt.ylabel("Rows")
-    plt.grid(visible=True, color='gray', linestyle='--', linewidth=0.5)  # Optional: add grid lines
     plt.show()
 
 
